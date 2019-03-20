@@ -21,7 +21,7 @@ keypoints:
 This code plots a timeseries of water surface area in a region and allows the user to click on the plot and display the classified image which produced the selected data point. Water classification is derived from Sentinel-1 Synthetic Aperture Radar (SAR). A new reservoir in the Mekong River Basin is used as an exaple for this problem.
 
 Link to a static version of the full script used in this module:
-[https://code.earthengine.google.com/a47b635ed6a11a99199674364afb9944](https://code.earthengine.google.com/a47b635ed6a11a99199674364afb9944)
+[https://code.earthengine.google.com/2530f17708e876ed73cb7945fe2a1b37](https://code.earthengine.google.com/2530f17708e876ed73cb7945fe2a1b37)
 
 ## Define Region
 
