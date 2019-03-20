@@ -65,7 +65,7 @@ Map.centerObject(roi,7);
 {% endhighlight %}
 
 <br>
-<img src="../fig/NDSI_Skagit.png" border = "10">
+<img src="../fig/NDSI_Skagit.PNG" border = "10">
 <br><br>
 
 ## Make plot of average NDSI by region
@@ -93,7 +93,7 @@ print(SnowChart)
 {% endhighlight %}
 
 <br>
-<img src="../fig/NDSI_Skagit_Chart.png" border = "10">
+<img src="../fig/NDSI_Skagit_Chart.PNG" border = "10">
 <br><br>
 
 The type of chart we use ("seriesByRegion") accepts mutiple regions as input and reduces the image collection in each region individually. Try returning to the line where we selected Skagit County and remove the "COUNTYFP" filter. This will result in all counties in Washington being selected. Running the code again will result in a timeseries plot of averaged NDSI in all counties.
@@ -104,7 +104,7 @@ var roi = counties.filter(ee.Filter.eq('STATEFP',53))//.filter((ee.Filter.eq('CO
 {% endhighlight %}
 
 <br>
-<img src="../fig/NDSI_AllCounties_Chart.png" border = "10">
+<img src="../fig/NDSI_AllCounties_Chart.PNG" border = "10">
 <br><br>
 
 ## Create a User Interface
@@ -170,7 +170,7 @@ ui.root.insert(0, panel);
 You should see something like this appear in the bottom left:
 
 <br>
-<img src="../fig/NDSI_Chart_Inspector.png" border = "10" width="75%" height="75%">
+<img src="../fig/NDSI_Chart_Inspector.PNG" border = "10" width="75%" height="75%">
 <br><br>
 
 ## Extracting Time Series Data for larger regions or more points
