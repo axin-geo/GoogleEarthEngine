@@ -30,70 +30,44 @@ Link to a static version of the full script used in this module:
 This script is structured to make it easy for the user to select different images, dates and regions. For this exercise, we are going to leave the parameters as they are to set the extent as a study area in Skagit County, Washington.
 
 {% highlight javascript %}
-// load WBD dataset & select the Republican watershed
-var WBD = ee.FeatureCollection("USGS/WBD/2017/HUC06");
-Map.addLayer(WBD, {}, 'watersheds');
-var setExtent = WBD.filterMetadata('name', 'equals', 'Republican');
+// load county boundaries and select Skagit County in Washington
+var counties = ee.FeatureCollection('ft:1ZMnPbFshUI3qbk9XE0H7t1N5CjsEGyl8lZfWfVn4');
+// state number for WA: 53, county number for Skagit: 57
+var roi = counties.filter(ee.Filter.eq('STATEFP',53)).filter((ee.Filter.eq('COUNTYFP',57)));
 
 {% endhighlight %}
 <br>
 
-## Load High Resolution Crop Imagery
+## Load MODIS Surface Reflectance and Calculate NDSI
 
-Here we are loading three different types of high resolution crop imagery. The first two datasets are already in Earth Engine. The third dataset is an Greenness index calculated from Landsat imagery. Instead of calculating the GI on the fly in this code, Jill pre-computed the index, exported the raster and is calling the pre-made raster. Practices like this can help speed up your code.
-
-1. Cropland Data Layer (CDL) from the USDA National Agriculture Statistics Service at 30 meters resolution. This is generated annually from 2008-present. Each pixel is assigned a value that corresponds to a specific crop.
-
-2. The National Agricultural Imagery Program (NAIP) aerial imagery from the USDA. This imagery has a 1 meter (!) ground sampling distance. This is a three band raster used to depict natural color imagery (RGB). States are imaged every 2-3 years on a rotating cycle.
-
-3.  A derived Greenness Index derived from Landsat imagery (30 m) specific to the study area. This index is computed by taking a composite of the greenest pixel, defined as the pixel with the highest NDVI, for a given time period.
-
-{% highlight javascript %}
-// CDL: USDA Cropland Data Layers
-var cdl = ee.Image('USDA/NASS/CDL/2010').select('cropland').clip(setExtent);
-
-// NAIP aerial photos
-var StartDate = '2010-01-01';
-var EndDate = '2010-12-31';
-
-var naip = ee.ImageCollection('USDA/NAIP/DOQQ')
-    .filterBounds(setExtent)
-    .filterDate(StartDate, EndDate);
-
-// Derived Landsat Composites --------------------
-
-// annual max greenness image for background (previously exported asset)
-var annualGreenest = ee.Image('users/jdeines/HPA/2010_14_Ind_001')
-                    .select(['GI_max_14','EVI_max_14'])
-                    .clip(setExtent);
-{% endhighlight %}
-
-## Load MODIS derived products for NDVI and EVI
-
-NDVI and EVI are two different vegetation indices that can be calculated from red and near-infrared bands. Here we are using a derived MODIS 16 day composite product that has pre-computed bands for NDVI and EVI. You could also compute them yourself using the  `normalizedDifference` function. Again we will filter the collection to the dates, bands and region of interest.
+NDSI is a spectral index calculated from green and shortwave-infrared bands. Here, we are deriving our own NDSI from MODIS 8 day composite surface reflectance product using the `normalizedDifference` function. NDSI ranges from -1 to 1, with values greater than 0 generallyconsidered to have snow present.
 
 {% highlight javascript %}
 
-// add satellite time series: MODIS EVI 250m 16 day -------------
-var collectionModEvi = ee.ImageCollection('MODIS/006/MOD13Q1')
-    .filterDate(StartDate,EndDate)
-    .filterBounds(setExtent)
-    .select('EVI');
+// load modis 8 day surface reflectance and filter to 2017
+var Modis = ee.ImageCollection('MODIS/006/MOD09A1')
+  .filterDate('2017-01-01','2017-12-31')
+  
+// write function to calculate snow index using band 4 (green) and band 6 (SWIR)
+var calcNDSI = function(img) {
+  var ndsi = img.normalizedDifference(['sur_refl_b04','sur_refl_b06']).rename('NDSI')
+  return img.addBands(ndsi)
+}
 
-// add satellite time series: MODIS NDVI 250m 16 day -------------
-var collectionModNDVI = ee.ImageCollection('MODIS/006/MOD13Q1')
-    .filterDate(StartDate,EndDate)
-    .filterBounds(setExtent)
-    .select('NDVI');
+// map function over modis collection
+var NDSI = Modis.map(calcNDSI).select('NDSI')
+
+// visualize maximum snow index from throughout the year and add region of interest above snow index layer
+var maxSnow = NDSI.max()
+Map.addLayer(maxSnow, {min: -1, max: 1})
+Map.addLayer(roi);
+Map.centerObject(roi,7);
 {% endhighlight %}
 
 
-## Visualize the High Resolution imagery
+## Make plot of average NDSI by region
 
-Here we map the CDL, NAIP and Annual Greenest Pixel composites.
- - *Time Saving Tip:* If you are using a public dataset, often you can find nice palettes by sifting through forum posts. Some like the CDL come with a palette embedded.
- - *Tip:* Hexadecimal browser color picker plug-ins are helpful for figuring out which colors correspond to which codes.
- - *Tip:*: Use the `false` argument if you want to load a layer to the map but NOT have it turned on each time you run the code.
+Here we make a plot of 8-day spatially averaged NDSI in Skagit County.   
 
  {% highlight javascript %}
 
