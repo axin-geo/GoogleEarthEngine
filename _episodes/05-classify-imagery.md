@@ -27,7 +27,7 @@ Google Earth Engine provides users with the opportunity to conduct many advanced
 The purpose is to get a classified map of land cover in an area of interest. We will examine Landsat imagery and manually identify a set of training points for three classes (water, forest, urban). We will then use those training points to train a classifier. The classifier will be used to classify the rest of the Landsat image into those three categories. We can then assess the accuracy of our classification using `classifier.confusionMatrix()`.
 
 Link to full code we used in this session:
-[https://code.earthengine.google.com/84027208bf2a94e77b5f14075fc5a938](https://code.earthengine.google.com/84027208bf2a94e77b5f14075fc5a938)
+[https://code.earthengine.google.com/c6c3d195c2d2b00d8852f0ac0cd1ef99](https://code.earthengine.google.com/c6c3d195c2d2b00d8852f0ac0cd1ef99)
 
 
 *Adapted from the [Earth Engine 201 Intermediate workshop](https://developers.google.com/earth-engine/classification)*
