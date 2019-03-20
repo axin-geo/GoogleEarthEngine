@@ -26,19 +26,8 @@ Please complete this tutorial before arriving at geohackweek. Use the steps belo
 
 Not sure if you have access? Use [this link](https://code.earthengine.google.com/) to check. If you didn't get access you will get an authorization error that says your account isn't registered. If you do have access, the link will open up the Javascript IDE. This link is your permanent portal to GEE access.
 
-### 2. Joining our shared GEE code repository
 
-Google Earth Engine allows you to have shared group folders/repositories for scripts. We've organized the code presented in this tutorial this way. Instead of adding each of your emails one at a time (tedious!), you will instead join a google group that will then allow you access to the shared code repository. Please follow these steps:
-
-  - Join the Geohackweek Google Earth Engine Tutorial Google group by clicking this link <a href="https://goo.gl/JsnWZH" target="_blank">https://goo.gl/JsnWZH</a> . Don't worry about posting permissions; we won't  be posting anything.
-  - Accept the shared repository by clicking this link:
-  <a href="https://code.earthengine.google.com/?accept_repo=users/kuhniculous/geohackweek2018" target="_blank">https://code.earthengine.google.com/?accept_repo=users/kuhniculous/geohackweek2018</a>
-  - In the code editor, go to the **Scripts tab** in the top left panel, scroll down and expand the "Reader" section. A directory called *users/kuhniculous/geohackweek2018* should appear with read-only versions of the full scripts from each episode.
-
-Test Link:
-
-
-### 3. Javascript Tips
+### 2. Javascript Tips
 
 JavaScript, not to be confused with Java, is a programming language widely used in web development alongside HTML and CSS. You can teach yourself JavaScript using any number of online tutorials, such as those offered by <a href="https://www.w3schools.com/js/" target="_blank">w3schools</a> .
 
