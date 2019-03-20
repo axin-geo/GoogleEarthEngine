@@ -7,9 +7,10 @@ questions:
 - How can I plot that time series within Google Earth Engine?
 - "How do I make that plot interactive?"
 objectives:
-- "Load high resolution crop imagery."
+- "Load MODIS imagery and calculate snow index."
+- "Plot timeseries of average snow index by counties in WA"
 - "Dynamically select lat/longs for creating time series plots."
-- "Create a time series of NDVI and EVI for a selected point."
+- "Create a time series of NDSI for a selected point."
 keypoints:
 - "Time series data can be extracted and plotted from Image Collections for points and regions."
 - "GEE has increasing functionality for making interactive plots."
@@ -19,14 +20,14 @@ keypoints:
 
 ## Overview
 
-This code allows users to dynamically generate time series plots for from points that are dynamically chosen on a map on the fly. The time series show the 16 day composites of Normalized Difference Vegetation Index and Enhanced Vegetation Index at 250 m resolution. These indices are derived from MODIS.
+This code allows users to dynamically generate time series plots for from points that are dynamically chosen on a map on the fly. The time series show the 8 day composites of Normalized Difference Snow Index at 250 m resolution. These indices are derived from MODIS.
 
 Link to a static version of the full script used in this module:
 [https://code.earthengine.google.com/a47b635ed6a11a99199674364afb9944](https://code.earthengine.google.com/a47b635ed6a11a99199674364afb9944)
 
 ## Define User Specifications
 
-This script is structured to make it easy for the user to select different images, dates and regions. For this exercise, we are going to leave the parameters as they are to set the extent as a study area in the Midwest, the Republican River Basin
+This script is structured to make it easy for the user to select different images, dates and regions. For this exercise, we are going to leave the parameters as they are to set the extent as a study area in Skagit County, Washington.
 
 {% highlight javascript %}
 // load WBD dataset & select the Republican watershed
