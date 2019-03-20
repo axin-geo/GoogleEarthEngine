@@ -19,7 +19,7 @@ keypoints:
 ---
 
 Link to a static version of the full script used in this module:
-[https://code.earthengine.google.com/269a0d4a6b9854e6f81ac87187a72559](https://code.earthengine.google.com/269a0d4a6b9854e6f81ac87187a72559)
+[https://code.earthengine.google.com/abc5e50c274971e83a6554344338e88e](https://code.earthengine.google.com/abc5e50c274971e83a6554344338e88e)
 
 # Reducers: Overview
 
