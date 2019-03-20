@@ -27,7 +27,7 @@ in the GEE User Guides.
 
 
 Link to the full code we used in this lesson:
-<a href="https://code.earthengine.google.com/5b548677928552fde2cc8b83a60bea40" target="_blank">https://code.earthengine.google.com/5b548677928552fde2cc8b83a60bea40</a>
+<a href="https://code.earthengine.google.com/5a7caa1b781542ea7cb1dc7069ec0f80" target="_blank">https://code.earthengine.google.com/5a7caa1b781542ea7cb1dc7069ec0f80</a>
 
 
 # Exercise: Exploring the Code Editor
