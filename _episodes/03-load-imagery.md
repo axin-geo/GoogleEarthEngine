@@ -30,7 +30,7 @@ Most satellite products are broken up into tiles for distribution. Global Landsa
 
 For most regional-scale applications, you will need to combine multiple satellite images to fully cover your spatial extent and fill in missing data caused by clouds, etc. Google Earth Engine (GEE) is particularly well suited to these tasks.
 
-A static version of the code can be accessed here: [https://code.earthengine.google.com/cbb204bbe485986b63485ee39c8382cc](https://code.earthengine.google.com/cbb204bbe485986b63485ee39c8382cc)*
+A static version of the code can be accessed here: [https://code.earthengine.google.com/c08ec6702ae89b2b14a5891c427bb7bf](https://code.earthengine.google.com/c08ec6702ae89b2b14a5891c427bb7bf)*
 
 
 # Exercise: Basic GEE Workflow
@@ -143,7 +143,7 @@ var maskClouds = function(image){
   // make a new single band image from the pixel qa band
   var pixel_qa = image.select('pixel_qa');
   // keep clear (0) and water (1) pixels
-  return image.updateMask(pixel_qa.eq(322));   
+  return image.updateMask(pixel_qa.eq(322).or(pixel_qa.eq(324)));   
 };
 
 // use "map" to apply the function to each image in the collection
