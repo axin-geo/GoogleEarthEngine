@@ -59,38 +59,52 @@ var NDSI = Modis.map(calcNDSI).select('NDSI')
 
 // visualize maximum snow index from throughout the year and add region of interest above snow index layer
 var maxSnow = NDSI.max()
-Map.addLayer(maxSnow, {min: -1, max: 1})
-Map.addLayer(roi);
+Map.addLayer(maxSnow, {min: -1, max: 1}, 'NDSI')
+Map.addLayer(roi, {}, 'Counties');
 Map.centerObject(roi,7);
 {% endhighlight %}
 
+<br>
+<img src="../fig/NDSI_Skagit.png" border = "10">
+<br><br>
 
 ## Make plot of average NDSI by region
 
-Here we make a plot of 8-day spatially averaged NDSI in Skagit County.   
+Here we make a plot of 8-day spatially averaged NDSI in Skagit County. The following code creates a chart and maps a spatial mean reducer across each image in the MODIS collection, using the Skagit County border as our region. We then print the chart to show it in the console.
 
- {% highlight javascript %}
+{% highlight javascript %}
+ 
+ // Plot NDSI ---------------------------------------------------------------------------------------------
+var SnowChart = ui.Chart.image.seriesByRegion({
+  imageCollection: NDSI,
+  regions: roi,
+  reducer: ee.Reducer.mean(), //type of reduction. See ee.Reducers for other kinds of reductions
+  scale: 500, //spatial scale of MODIS product
+  seriesProperty: 'NAME'  //property of roi to display in map
+})
+  .setOptions({
+    title: 'MODIS NDSI',
+    vAxis: {title: 'NDSI', maxValue: 1, minValue: -1},
+    hAxis: {title: 'date', format: 'MM-yy', gridlines: {count: 12}},
+  })
 
-// Visualize ----------------------------------------------------------------------------------
-Map.centerObject(setExtent, 8);
+print(SnowChart)
 
-// A nice EVI palette
-var palette = [
-  'FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
-  '74A901', '66A000', '529400', '3E8601', '207401', '056201',
-  '004C00', '023B01', '012E01', '011D01', '011301'];
-
-// greenest images
-Map.addLayer(annualGreenest.clip(setExtent).select('GI_max_14'),
-    {min:.75, max: 15, palette: palette}, 'GI - annual');
-
-// cdl and naip
-Map.addLayer(cdl, {}, 'cdl', false);
-Map.addLayer(naip, {}, 'naip', false);
 {% endhighlight %}
 
 <br>
-<img src="../fig/06_annualGreennest.png" border = "10">
+<img src="../fig/NDSI_Skagit_Chart.png" border = "10">
+<br><br>
+
+The type of chart we use ("seriesByRegion") accepts mutiple regions as input and reduces the image collection in each region individually. Try returning to the line where we selected Skagit County and remove the "COUNTYFP" filter. This will result in all counties in Washington being selected. Running the code again will result in a timeseries plot of averaged NDSI in all counties.
+
+{% highlight javascript %}
+//Comment out COUNTYFP filter
+var roi = counties.filter(ee.Filter.eq('STATEFP',53))//.filter((ee.Filter.eq('COUNTYFP',57)));
+{% endhighlight %}
+
+<br>
+<img src="../fig/NDSI_AllCounties_Chart.png" border = "10">
 <br><br>
 
 ## Create a User Interface
@@ -108,7 +122,7 @@ panel.style().set('width', '300px');
 // Create an intro panel with labels.
 var intro = ui.Panel([
   ui.Label({
-    value: 'Two Chart Inspector',
+    value: 'Time Series Chart Inspector',
     style: {fontSize: '20px', fontWeight: 'bold'}
   }),
   ui.Label('Click a point on the map to inspect.')
@@ -131,28 +145,20 @@ Map.onClick(function(coords) {
 
 ## Add the time series plots to the panels
 
-Now that we have set up our user interface and built the call-back, we can define a time series chart. The chart uses the lat/long selected by the user and builds a time series for NDVI or EVI at that point. It takes the average NDVI or EVI at that point, extracts it, and then adds it to the time series. This series is then plotting as a chart.
+Now that we have set up our user interface and built the call-back, we can define a time series chart. The chart uses the lat/long selected by the user and builds a time series for NDSI at that point. It takes the average NDSI at that point, extracts it, and then adds it to the time series. This series is then plotting as a chart.
 
 
   {% highlight javascript %}
 
-  // Create an MODIS EVI chart.
-  var eviChart = ui.Chart.image.series(collectionModEvi, point, ee.Reducer.mean(), 250);
-  eviChart.setOptions({
-    title: 'MODIS EVI',
-    vAxis: {title: 'EVI', maxValue: 9000},
+  // Create an MODIS NDSI chart.
+  var ndsiChart = ui.Chart.image.series(NDSI, point, ee.Reducer.mean(), 500);
+  ndsiChart.setOptions({
+    title: 'MODIS NDSI',
+    vAxis: {title: 'NDSI', maxValue: 1, minValue: -1},
     hAxis: {title: 'date', format: 'MM-yy', gridlines: {count: 7}},
   });
-  panel.widgets().set(2, eviChart);
+  panel.widgets().set(2, ndsiChart);
 
-  // Create an MODIS NDVI chart.
-  var ndviChart = ui.Chart.image.series(collectionModNDVI, point, ee.Reducer.mean(), 250);
-  ndviChart.setOptions({
-    title: 'MODIS NDVI',
-    vAxis: {title: 'NDVI', maxValue: 9000},
-    hAxis: {title: 'date', format: 'MM-yy', gridlines: {count: 7}},
-  });
-  panel.widgets().set(3, ndviChart);
 });
 
 Map.style().set('cursor', 'crosshair');
@@ -164,15 +170,9 @@ ui.root.insert(0, panel);
 You should see something like this appear in the bottom left:
 
 <br>
-<img src="../fig/06_twoChart.png" border = "10" width="75%" height="75%">
+<img src="../fig/NDSI_Chart_Inspector.png" border = "10" width="75%" height="75%">
 <br><br>
-
-## Exploring the NDVI and EVI plots for different crop types.
-
-Toggle the Greenness, CDL and NAIP imagery layers on and off. Use the inspector to click on pixels with different levels of Greenness or different crop types and explore the differences in the NDVI time series between different pixels.
-
-
 
 ## Extracting Time Series Data for larger regions or more points
 
-If you are computing the indices on the fly, or you have many points or areas of interest, you may have the unpleasant experience of your code timing out. One way to avoid that is to just export the time series as a .csv to Google Drive or Cloud Storage. An example of how to do this can be found in [Episode 04: Reducers](https://geohackweek.github.io/GoogleEarthEngine/04-reducers/) of this tutorial.
+If you are computing the indices on the fly, or you have many points or areas of interest, you may have the unpleasant experience of your code timing out. One way to avoid that is to just export the time series as a .csv to Google Drive or Cloud Storage. An example of how to do this can be found in [Episode 04: Reducers](https://mbonnema.github.io/GoogleEarthEngine/04-reducers/) of this tutorial.
