@@ -160,6 +160,13 @@ Map.addLayer(ee.Image(l8collection.first()), visParams, 'original', false)
 <img src="../fig/03_masked.png" border = "10">
 <br><br>
 
+### Normalized Difference Index
+Different kinds of normalized difference indexes are often used to interpret satellite imagery for specific land surface features. These indexes leverage the spectral characteristics of the target land surface to make it stand out. Here, we are using the Normalized Difference Vegetation Index (NDVI) to highlight areas of high vegetation. NDVI is calculated by taking the difference between the the near infrared (NIR) reflectance and the visible red reflectance and then normalizing by the sum of NIR and red. Leaves have high absorption of red light, and high reflectance of NIR light, resulting in high NDVI.
+
+<br>
+<img src="../fig/NDVI.PNG" border = "10">
+<br><br>
+
 ### Calculating NDVI as a New Band
 Similarly, if we want to calculate the NDVI in each image and add it as a new band, we need to create a function and map it over the collection. Here, we use the `normalizedDifference()` function. The [Mathematical Operations page in the GEE Developer's Guide](https://developers.google.com/earth-engine/image_math) provides more information about simple and complex raster calculations.
 
