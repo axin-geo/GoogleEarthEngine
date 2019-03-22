@@ -20,7 +20,7 @@ keypoints:
 
 ## Overview
 
-This code allows users to dynamically generate time series plots for from points that are dynamically chosen on a map on the fly. The time series show the 8 day composites of Normalized Difference Snow Index at 250 m resolution. These indices are derived from MODIS.
+This code allows users to dynamically generate time series plots for from points that are dynamically chosen on a map on the fly. The time series show the 8 day composites of Normalized Difference Snow Index at 500 m resolution. These indices are derived from MODIS.
 
 Link to a static version of the full script used in this module:
 [https://code.earthengine.google.com/6a6470a8ee527aeec31dcd492bf6b98e](https://code.earthengine.google.com/6a6470a8ee527aeec31dcd492bf6b98e)
