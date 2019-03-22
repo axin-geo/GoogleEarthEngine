@@ -75,12 +75,6 @@ Some commonly used reducers have shortcut syntax, such as `imageCollection.mean(
 
 {% highlight javascript %}
 
-// load precip data (mm, daily total): 365 images per year
-var precipCollection = ee.ImageCollection('IDAHO_EPSCOR/GRIDMET')
-                    .select('pr')   // select  precip band only
-                    .filterDate('2017-01-01', '2017-12-31');
-print(precipCollection);  
-
 // reduce the image collection to one image by summing the 365 daily rasters
 var annualPrecip = precipCollection.reduce(ee.Reducer.sum());
 print(annualPrecip);
