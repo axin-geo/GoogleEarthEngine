@@ -1,5 +1,5 @@
 ---
-title: "Supervised Classification of Satellite Imagery"
+title: "Bonus: Supervised Classification of Satellite Imagery"
 teaching: 0
 exercises: 0
 questions:
