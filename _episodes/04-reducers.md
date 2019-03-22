@@ -1,7 +1,7 @@
 ---
 title: "Temporal and Spatial Reducers"
 teaching: 5
-exercises: 10
+exercises: 20
 questions:
 - How do I aggregate a time series of raster data over a time period?
 - How do I summarize data by vector regions?
