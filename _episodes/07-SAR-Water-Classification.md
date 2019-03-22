@@ -1,7 +1,7 @@
 ---
 title: "SAR Water Body Classification"
 teaching: 5
-exercises: 10
+exercises: 30
 questions:
 - How do I track changes in inundated area?
 - How can I plot inundated area changes in Google Earth Engine?
